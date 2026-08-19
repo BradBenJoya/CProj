@@ -20,6 +20,6 @@ conan install . --output-folder=build --build=missing
 
 Configure and compile:
 ```bash
-cmake -S . -B build -DCMAKE_TOOLCHAIN_FILE=build/conan_toolchain.cmake
+cmake -S . -B build -DCMAKE_TOOLCHAIN_FILE=build/conan_toolchain.cmake -DCMAKE_BUILD_TYPE=Release
 cmake --build build
 ```
