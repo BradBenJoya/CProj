@@ -1,9 +1,12 @@
 #include "init.h"
 
+#include <boost/process/v1/child.hpp>
+#include <boost/process/v1/search_path.hpp>
 #include <cstdlib>
 #include <filesystem>
 #include <format>
 #include <fstream>
+#include <iostream>
 #include <print>
 #include <string_view>
 
@@ -100,9 +103,11 @@ namespace cproj_core {
 
 		std::filesystem::create_directories(core);
 
-		std::system(
-			std::format("git init \"{}\"", name).c_str()
-		);
+		boost::process::v1::child git(boost::process::v1::search_path("git"), "init", root.string());
+		git.wait();
+		if (git.exit_code() != 0) {
+			std::println(std::cerr, "Failed to initialize Git repository");
+		}
 
 		std::ofstream mainFile{ src / "main.cpp" };
 		mainFile << mainCpp;

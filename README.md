@@ -10,8 +10,16 @@ Builds the project. If path is not provided it will use the current working dire
 Builds the project like the former but also runs it.
 
 ## Building
-Building CProj is very simple. All you need is a C++ 23 compiler and CMake.
-To compile run:
-```cmake -S . -B build```
-And:
-```cmake --build build```
+Building CProj requires a C++ 23 compiler, CMake, and Conan 2.
+
+Install dependencies:
+```bash
+conan profile detect --force
+conan install . --output-folder=build --build=missing
+```
+
+Configure and compile:
+```bash
+cmake -S . -B build -DCMAKE_TOOLCHAIN_FILE=build/conan_toolchain.cmake
+cmake --build build
+```

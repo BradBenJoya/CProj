@@ -1,6 +1,7 @@
 #include "build.h"
 #include "run.h"
 
+#include <boost/process/v1/child.hpp>
 #include <cstdlib>
 #include <filesystem>
 #include <format>
@@ -19,7 +20,9 @@ namespace cproj_core {
 		const std::filesystem::path executable = path / "bin" / name;
 #endif
 
-		if (std::system(std::format("\"{}\"", executable.string()).c_str()) != 0) {
+		boost::process::v1::child program(executable.string());
+		program.wait();
+		if (program.exit_code() != 0) {
 			std::println(std::cerr, "Failed to run project");
 		}
 	}
